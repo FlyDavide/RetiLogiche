@@ -55,7 +55,7 @@ architecture Behavioral of project_reti_logiche is
     signal Ar1 : STD_LOGIC; -- Attiva il registro 1 per permetterli di salvare l'indirizzo di uscita del dato
     signal ON2 : STD_LOGIC; --Attiva il modulo 2 (lo accende)
     ---------------------------------------------------------
-    -- Segnali Registro 1 : (registro che salva l'uscita che devr‡ essere attivata)
+    -- Segnali Registro 1 : (registro che salva l'uscita che devr√† essere attivata)
     signal R1: std_logic_vector(1 downto 0);
     ---------------------------------------------------------
     -- Segnali Modulo 2:
@@ -275,7 +275,7 @@ architecture Behavioral of project_reti_logiche is
     o_mem_we <= i_start;
     ON3 <= (not i_start) and ON2;
     ---------------------------------------------- 
-    -- Gestisce l'uscita dei Dati, in caso in cui Yd (ciÚ o_done) Ë 1 deve far uscire i risultati salvati nel registro, in caso sia opposto fa uscire solo 0
+    -- Gestisce l'uscita dei Dati, in caso in cui Yd (ci√≤ o_done) √® 1 deve far uscire i risultati salvati nel registro, in caso sia opposto fa uscire solo 0
     -- Mod 4:
     AttivUscitaZ: process(ActivZ, D3, D2, D1, D0)
     begin
