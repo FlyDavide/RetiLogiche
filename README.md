@@ -1,16 +1,15 @@
 # Reti Logiche
 progetto universitario del corso: Reti logiche
 
-##Interfacce
+## Interfacce
 Il modulo da implementare ha due ingressi primari da 1 bit (**W** e **START**) e 5 uscite primarie.
 Le uscite sono le seguenti: quattro da 8 bit (**Z0**, **Z1**, **Z2**, **Z3**) e una da 1 bit (**DONE**).
 Inoltre, il modulo ha un segnale di clock **CLK**, unico per tutto il sistema e un segnale di reset
 **RESET** anch’esso unico.
 
-##Funzionamento
+## Funzionamento
 All’istante iniziale, quello relativo al **reset** del sistema, le uscite hanno i seguenti valori:
 Z0, Z1, Z2 e Z3 sono 0000 0000, DONE è 0.
-
 I dati in ingresso, ottenuti come sequenze sull’ingresso primario seriale W lette sul fronte
 di salita del clock, sono organizzati nel seguente modo:
 * 2 bit di intestazione (i primi della sequenza) seguiti da
@@ -22,20 +21,24 @@ essere indirizzato verso un canale di **uscita**.
 
 I due bit di intestazione identificano il canale d’uscita (Z0, Z1, Z2 o Z3) sul quale deve
 essere indirizzato il messaggio. Il primo bit è il bit più significativo del canale di uscita,
-il secondo quello meno significativo, più in dettaglio:
+il secondo quello meno significativo, più in dettaglio:  
 
-00 identifica Z0, 01 identifica Z1, 10 identifica Z2 e, infine, 11 identifica Z3.
-
+* 00 identifica Z0
+* 01 identifica Z1
+* 10 identifica Z2
+* 11 identifica Z3
+  
+  
 Gli **N** bit di indirizzo possono variare da 0 fino ad un **massimo di 16 bit**. Gli indirizzi di
 memoria sono tutti di 16 bit.
 Se il numero di bit di N è inferiore a 16, l’indirizzo viene **esteso** con **0 sui bit più significativi**.
 
 * Ad esempio:
-    (N = 7)   1010111            –>    0000000001010111
-    (N = 16)  1110000001010111   –>    1110000001010111
-    (N = 0)   0000000000000000   –>    0000000000000000
-
-
+  
+    (N = 7)   1010111            –>    0000000001010111  
+    (N = 16)  1110000001010111   –>    1110000001010111  
+    (N = 0)   0000000000000000   –>    0000000000000000  
+    
 Tutti i bit su W devono essere letti sul fronte di salita del clock.
 La sequenza di ingresso è valida quando il segnale START è alto (=1) e termina quando il
 segnale START è basso (=0).
@@ -61,32 +64,29 @@ Una seconda (o successiva) elaborazione con START=1 non dovrà invece attendere 
 del modulo. Ogni qual volta viene dato il segnale di RESET (RESET=1), il modulo viene
 re-inizializzato.
 
+# Interfaccia del Componente
+Il componente da descrivere deve avere la seguente interfaccia:  
+
+&emsp;&emsp;entity project_reti_logiche is port (  
+&emsp;&emsp;&emsp;&emsp;i_clk : in std_logic;  
+&emsp;&emsp;&emsp;&emsp;i_rst : in std_logic;  
+&emsp;&emsp;&emsp;&emsp;i_start : in std_logic;  
+&emsp;&emsp;&emsp;&emsp;i_w : in std_logic;  
+&emsp;&emsp;&emsp;&emsp;o_z0 : out std_logic_vector(7 downto 0);  
+&emsp;&emsp;&emsp;&emsp;o_z1 : out std_logic_vector(7 downto 0);  
+&emsp;&emsp;&emsp;&emsp;o_z2 : out std_logic_vector(7 downto 0);  
+&emsp;&emsp;&emsp;&emsp;o_z3 : out std_logic_vector(7 downto 0);  
+&emsp;&emsp;&emsp;&emsp;o_done : out std_logic;  
+&emsp;&emsp;&emsp;&emsp;o_mem_addr : out std_logic_vector(15 downto 0);  
+&emsp;&emsp;&emsp;&emsp;i_mem_data : in std_logic_vector(7 downto 0);  
+&emsp;&emsp;&emsp;&emsp;o_mem_we : out std_logic;  
+&emsp;&emsp;&emsp;&emsp;o_mem_en : out std_logic;  
+&emsp;&emsp;);  
+&emsp;&emsp;end project_reti_logiche;  
 
 
-##Interfaccia del Componente
-Il componente da descrivere deve avere la seguente interfaccia.
------------------------------------------------------------------------------------------------------
 
-  entity project_reti_logiche is port (
-    i_clk : in std_logic;
-    i_rst : in std_logic;
-    i_start : in std_logic;
-    i_w : in std_logic;
-    o_z0 : out std_logic_vector(7 downto 0);
-    o_z1 : out std_logic_vector(7 downto 0);
-    o_z2 : out std_logic_vector(7 downto 0);
-    o_z3 : out std_logic_vector(7 downto 0);
-    o_done : out std_logic;
-    o_mem_addr : out std_logic_vector(15 downto 0);
-    i_mem_data : in std_logic_vector(7 downto 0);
-    o_mem_we : out std_logic;
-    o_mem_en : out std_logic
-  );
-  end project_reti_logiche;
-
------------------------------------------------------------------------------------------------------
-
-###*In particolare:*
+### *In particolare:*
 * il nome del modulo deve essere project_reti_logiche e deve essere presente 
   una sola architettura per ogni entità; la violazione di queste indicazioni comporta
   l’impossibilità di eseguire il Test Bench e una conseguente valutazione di zero;
@@ -104,3 +104,4 @@ Il componente da descrivere deve avere la seguente interfaccia.
   comunicare (sia in lettura che in scrittura);
 * o_mem_we è il segnale di WRITE ENABLE da dover mandare alla memoria (=1) per
   poter scriverci. Per leggere da memoria esso deve essere 0.
+  
